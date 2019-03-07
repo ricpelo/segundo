@@ -16,6 +16,8 @@ use Yii;
  */
 class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+    public $_numCitas = null;
+
     /**
      * {@inheritdoc}
      */
@@ -48,6 +50,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'nombre' => 'Nombre',
             'email' => 'Email',
             'password' => 'Password',
+            'numCitas' => 'Número de citas',
         ];
     }
 
@@ -116,5 +119,27 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);
+    }
+
+    public function getNumCitas()
+    {
+        // if ($this->_numCitas === null) {
+        //     $this->_numCitas = $this->getCitas()->count();
+        // }
+        return $this->_numCitas;
+    }
+
+    public function setNumCitas($numCitas)
+    {
+        $this->_numCitas = $numCitas;
+    }
+
+    public static function findWithNumCitas()
+    {
+        return static::find()
+            ->select('usuarios.*, COUNT(c.id) AS "numCitas"')
+            ->joinWith('citas c')
+            ->where('instante > LOCALTIMESTAMP')
+            ->groupBy('usuarios.id');
     }
 }
