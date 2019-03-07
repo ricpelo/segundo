@@ -3,6 +3,8 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 
+use yii\web\View;
+
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -30,6 +32,7 @@ $js = <<<EOT
                     option.innerHTML = data[i].nombre;
                     sel.append(option);
                 }
+                $('#w0').yiiActiveForm('validateAttribute', 'citas-especialista_id');
                 hueco();
             }
         });
@@ -51,6 +54,7 @@ $js = <<<EOT
     }
 EOT;
 $this->registerJs($js);
+$this->registerJs("$('#w0').yiiActiveForm('validateAttribute', 'citas-especialista_id');", View::POS_LOAD);
 ?>
 <div class="citas-create">
     <h1><?= Html::encode($this->title) ?></h1>
