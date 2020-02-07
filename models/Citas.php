@@ -26,6 +26,11 @@ class Citas extends \yii\db\ActiveRecord
         return 'citas';
     }
 
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), ['especialidad_id']);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -37,15 +42,16 @@ class Citas extends \yii\db\ActiveRecord
             [['usuario_id', 'especialista_id'], 'integer'],
             [['especialista_id'], 'exist', 'skipOnError' => true, 'targetClass' => Especialistas::className(), 'targetAttribute' => ['especialista_id' => 'id']],
             [['usuario_id'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_id' => 'id']],
-            [['especialista_id'], 'especialidadDuplicada'],
+            [['especialidad_id'], 'especialidadDuplicada'],
         ];
     }
 
     public function especialidadDuplicada($attribute, $params)
     {
         if (!$this->hasErrors()) {
-            $especialista = Especialistas::findOne($this->especialista_id);
-            $especialidad_id = $especialista->especialidad_id;
+            // $especialista = Especialistas::findOne($this->especialista_id);
+            // $especialidad_id = $especialista->especialidad_id;
+            $especialidad_id = $this->especialidad_id;
             if (static::find()
                 ->joinWith('especialista e')
                 ->where([

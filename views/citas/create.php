@@ -17,7 +17,7 @@ $url = Url::to(['citas/especialistas-ajax']);
 $urlHueco = Url::to(['citas/hueco-ajax']);
 $js = <<<EOT
     hueco();
-    $('#citas-especialidad_id').change(function (ev) {
+    $('#citas-especialidad_id').on('change.yii', function (ev) {
         var el = $(this);
         var especialidad_id = el.val();
         $.ajax({
@@ -54,7 +54,7 @@ $js = <<<EOT
     }
 EOT;
 $this->registerJs($js);
-$this->registerJs("$('#w0').yiiActiveForm('validateAttribute', 'citas-especialista_id');", View::POS_LOAD);
+$this->registerJs("$('#w0').yiiActiveForm('validateAttribute', 'citas-especialidad_id');", View::POS_LOAD);
 ?>
 <div class="citas-create">
     <h1><?= Html::encode($this->title) ?></h1>
